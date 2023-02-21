@@ -127,14 +127,15 @@ export class AsignacionCitasComponent implements OnInit {
   }
 
   getCallPending() {
-    this.asignacionCitas.getCallPending().subscribe((res: Response) => {
-      if (res.data) {
-        this.Id_llamada = res.data.id
-        this.mypatient.name = res.data.patient.firstname + ' ' + res.data.patient.surname
-        this.mypatient.identifier = res.data.patient.identifier
-        this.mymodal.show()
-      }
-    });
+    // this.asignacionCitas.getCallPending().subscribe((res: Response) => {
+
+    //   if (res.data) {
+    //     this.Id_llamada = res.data.id
+    //     this.mypatient.name = res.data.patient.firstname + ' ' + res.data.patient.surname
+    //     this.mypatient.identifier = res.data.patient.identifier
+    //     this.mymodal.show()
+    //   }
+    // });
   }
 
   Init() {

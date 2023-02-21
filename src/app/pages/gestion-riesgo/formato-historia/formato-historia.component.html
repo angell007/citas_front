@@ -1,0 +1,241 @@
+<div class="row">
+  <div class="col-12">
+    <form [formGroup]="forma">
+      <ng-container formArrayName="questions">
+        <div [formGroupName]="qi" *ngFor="let question of questions.controls; let qi = index">
+          <div class="card">
+            <div class="card-body">
+              <div class="mb-2 row">
+                <div class="col-7 d-flex align-items-center">
+                  <div class="form-group row w-100">
+                    <label class="col-4 col-form-label">Pregunta {{ qi + 1 }}</label>
+                    <div class="col-8">
+                      <input formControlName="title" class="form-control form-control-sm" type="text" />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-5">
+                  <div class="form-group row w-100">
+                    <label class="col-4 col-form-label">Tipo dato:</label>
+                    <div class="col-8">
+                      <select formControlName="type" class="form-control-sm form-control">
+                        <option [value]="type" *ngFor="let type of typeInputs">
+                          {{ type }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row mb-2">
+                <div class="col-7"></div>
+                <div class="col-5" formArrayName="options">
+                  <div [formGroupName]="oi" *ngFor="
+                      let option of question.controls.options.controls;
+                      let oi = index
+                    " class="mb-2">
+                    <input formControlName="value" class="form-control form-control-sm" type="text"
+                      placeholder="valor" />
+                  </div>
+                  <button *ngIf="
+                      question.controls.type.value == 'select' ||
+                      question.controls.type.value == 'check'
+                    " (click)="addOption(question.controls.options)" class="btn btn-sm btn-outline-primary">
+                    <i class="fa fa-plus"></i> Opción
+                  </button>
+                </div>
+              </div>
+
+              <div class="row" formArrayName="validations">
+                <div class="col-12" [formGroupName]="vi" *ngFor="
+                    let validation of question.controls.validations.controls;
+                    let vi = index
+                  ">
+                  <div class="row mb-4 rules-level2">
+                    <div class="col-12 d-flex justify-content-between">
+                      <h5 class="mb-4">Validación:</h5>
+
+                      <i (click)="delete(question.controls.validations,vi)" class="fa fa-times"></i>
+                    </div>
+                    <div class="col-12">
+                      <div class="row m-0 p-0">
+                        <div class="col-12" formArrayName="rules">
+                          <div [formGroupName]="o1" *ngFor="
+                              let cond of validation.controls.rules.controls;
+                              let o1 = index
+                            " class="row mb-2">
+                            <div class="col-2">
+                              <div class="form-group" *ngIf="0 != o1">
+                                <label>Operador</label>
+                                <select formControlName="logic" class="form-control form-control-sm" name="">
+                                  <option value="and">and</option>
+                                  <option value="or">or</option>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="col-10">
+                              <div class="row">
+                                <div class="col-12" formArrayName="level2">
+                                  <div [formGroupName]="oi" *ngFor="
+                                      let operator of cond.controls.level2
+                                        .controls;
+                                      let oi = index
+                                    " class="row">
+                                    <div class="col-11">
+                                      <div class="row">
+                                        <div class="col-12 mb-2">
+                                          <div class="form-group">
+                                            <label>Pregunta</label>
+                                            <select formControlName="id_question_selected" class="
+                                                form-control form-control-sm
+                                              ">
+                                              <option [value]="
+                                                  question2.controls.id.value
+                                                " *ngFor="
+                                                  let question2 of questions.controls;
+                                                  let qir = index
+                                                ">
+                                                {{
+                                                question2.controls.title.value
+                                                }}
+                                              </option>
+                                            </select>
+                                          </div>
+                                        </div>
+
+                                        <ng-container *ngIf="
+                                            operator.controls
+                                              .question_selected &&
+                                              operator.controls
+                                                .question_selected.value?.type !=
+                                                'select' &&
+                                              operator.controls
+                                                .question_selected.value.question_selected?.type !=
+                                                'check';
+                                            else selectables
+                                          ">
+                                          <div class="col-4 m-0">
+                                            <div class="form-group">
+                                              <label>Operador</label>
+                                              <select class="
+                                                  form-control form-control-sm
+                                                " formControlName="operator">
+                                                <option [value]="oper" *ngFor="let oper of operators">
+                                                  {{ oper }}
+                                                </option>
+                                              </select>
+                                            </div>
+                                          </div>
+                                          <div class="col-8 m-0 mb-4">
+                                            <div class="form-group">
+                                              <label>Valor</label>
+                                              <input formControlName="value" class="
+                                                  form-control form-control-sm
+                                                  m-0
+                                                " />
+                                            </div>
+                                          </div>
+                                        </ng-container>
+                                        <ng-template #selectables>
+                                          <div class="col-4 m-0">
+                                            <div class="form-group">
+                                              <label>Valor</label>
+                                              <select class="
+                                                  form-control form-control-sm
+                                                " formControlName="operator">
+                                                <option [value]="oper" *ngFor="
+                                                    let oper of operatorsSelect
+                                                  ">
+                                                  {{ oper }}
+                                                </option>
+                                              </select>
+                                            </div>
+                                          </div>
+                                          <div class="col-8 m-0 mb-4">
+                                            <div class="form-group">
+                                              <label>Pregunta</label>
+                                              <select class="
+                                                  form-control form-control-sm
+                                                " formControlName="value">
+                                                <option [value]="
+                                                    foption.value
+                                                  " *ngFor="
+                                                    let foption of operator
+                                                      .controls
+                                                      .question_selected.value.options
+                                                  ">
+                                                  {{
+                                                  foption.value
+                                                  }}
+                                                </option>
+                                              </select>
+                                            </div>
+                                          </div>
+                                        </ng-template>
+                                        <div class="col-12 mb-4" *ngIf="
+                                            oi !=
+                                            cond.controls.level2.controls
+                                              .length -
+                                              1
+                                          ">
+                                          <select formControlName="logic" class="form-control form-control-sm" name="">
+                                            <option value="and">and</option>
+                                            <option value="or">or</option>
+                                          </select>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-1 text-right" (click)="delete(cond.controls.level2, oi)">
+                                      <i class="fa fa-trash"></i>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-12">
+                                  <button (click)="addRule(cond.controls.level2)"
+                                    class="btn btn-sm btn-outline-primary">
+                                    <i class="fa fa-plus"></i> Regla
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-12">
+                      <div class="row mt-2">
+                        <div class="col-2">Then</div>
+                        <div class="col-9">
+                          <input formControlName="then" class="form-control form-control-sm" type="text" />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-12">
+                      <button (click)="addRu(validation.controls.rules)" class="btn btn-sm btn-outline-primary">
+                        <i class="fa fa-plus"></i> Condición
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <button (click)="addValidation(question.controls.validations)" class="btn btn-sm btn-outline-primary">
+                    <i class="fa fa-plus"></i> Validación
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </form>
+    <button (click)="addQuestion()" class="btn btn-sm btn-block btn-outline-primary">
+      <i class="fa fa-plus"></i> Pregunta
+    </button>
+  </div>
+</div>
+
+<hr>
+
+<button (click)="save()" class="btn btn-sm btn-block btn-info">
+  <i class="fa fa-lock"></i> Guardar
+</button>

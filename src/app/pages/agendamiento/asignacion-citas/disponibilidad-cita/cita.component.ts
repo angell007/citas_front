@@ -77,7 +77,7 @@ export class CitaComponent implements OnInit {
       this._queryAvailabilitySpacesService.getPerson.next({ person: this.dataCitaToAssign.person, params: form.value });
 
     } else {
-      this._queryAvailabilitySpacesService.getPerson.next({ person: 0, params: 0 })
+      this._queryAvailabilitySpacesService.getPerson.next({ person: 0, params: form.value })
     }
   }
 

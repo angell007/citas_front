@@ -7,12 +7,12 @@ import { environment } from 'src/environments/environment';
 })
 export class AsignacionCitasService {
     finalizedCall(params = {}) {
-        return this.httpClient.get(environment.base_url + '/finalize-my-call-pending', {params})
+        return this.httpClient.get(environment.base_url + '/finalize-my-call-pending', { params })
     }
 
     constructor(private httpClient: HttpClient) { }
 
     getCallPending() {
-        return this.httpClient.get(environment.base_url + '/get-call-pending')
+        // return this.httpClient.get(environment.base_url + '/get-call-pending')
     }
 }
